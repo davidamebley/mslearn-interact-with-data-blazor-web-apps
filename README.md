@@ -1,4 +1,10 @@
+# Important Notice
 
+This project is part of [The Microsoft Learn Cloud Skills Challenge (2023) edition.](https://www.microsoft.com/en-US/cloudskillschallenge/build/registration/2023)
+
+The current module is titled: **"Build web applications with Blazor"**
+
+All initial project files were provided by Microsoft.
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
