@@ -1,30 +1,50 @@
 @page "/"
-@inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
+    @inject HttpClient HttpClient
+    @inject NavigationManager NavigationManager
 
-<div class="main">
-  <h1>Blazing Pizzas</h1>
-  <ul class="pizza-cards">
+    <div class="main">
+      <h1>Blazing Pizzas</h1>
+      <ul class="pizza-cards">
         @if (specials != null)
-        { @foreach (var special in specials)
-            {
-            <li style="background-image: url('@special.ImageUrl')">
+        {
+          @foreach (var special in specials)
+          {
+            <li @onclick="@(() => ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
               <div class="pizza-info">
-                <span class="title">@special.Name</span>
-                        @special.Description
-                <span class="price">@special.GetFormattedBasePrice()</span>
+              <span class="title">@special.Name</span>
+              @special.Description
+              <span class="price">@special.GetFormattedBasePrice()</span>
               </div>
             </li>
-            }       }
-  </ul>
-</div>
+          }
+        }
+      </ul>
+    </div>
 
-@code {
-    List<PizzaSpecial> specials = new(); protected override async Task
-    OnInitializedAsync()
+    @if (showingConfigureDialog)
     {
-        specials = await
-    HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri +
-    "specials");
+        <ConfigurePizzaDialog Pizza="configuringPizza" />
     }
-} 
+
+    @code {
+      List<PizzaSpecial> specials = new();
+      Pizza configuringPizza;
+      bool showingConfigureDialog;
+
+      protected override async Task OnInitializedAsync()
+      {
+          specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
+      }
+
+      void ShowConfigurePizzaDialog(PizzaSpecial special)
+      {
+          configuringPizza = new Pizza()
+          {
+              Special = special,
+              SpecialId = special.Id,
+              Size = Pizza.DefaultSize
+          };
+
+          showingConfigureDialog = true;
+      }
+    }
