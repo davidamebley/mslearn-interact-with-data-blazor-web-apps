@@ -4,8 +4,10 @@ public static class SeedData
 {
     public static void Initialize(PizzaStoreContext db)
     {
-        var specials = new PizzaSpecial[]
+        if (!db.Specials.Any()) // Only add the data if it doesn't already exist
         {
+            var specials = new PizzaSpecial[]
+            {
             new PizzaSpecial()
             {
                 Name = "Basic Cheese Pizza",
@@ -61,8 +63,9 @@ public static class SeedData
                 BasePrice = 9.99m,
                 ImageUrl = "img/pizzas/margherita.jpg",
             },
-        };
-        db.Specials.AddRange(specials);
-        db.SaveChanges();
+            };
+            db.Specials.AddRange(specials);
+            db.SaveChanges();
+        }
     }
 }

@@ -40,8 +40,18 @@ public class OrdersController : Controller
             pizza.Special = null;
         }
 
-        _db.Orders.Attach(order);
-        await _db.SaveChangesAsync();
+        try
+        {
+            _db.Orders.Attach(order);
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            // Log the detailed exception here
+            Console.WriteLine("Detailed Error: " + ex.InnerException?.Message);
+            // Then return a meaningful message to the client side
+            return BadRequest("An error occurred while saving changes.");
+        }
 
         return order.OrderId;
     }

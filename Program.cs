@@ -1,5 +1,6 @@
 using BlazingPizza.Data;
 using BlazingPizza.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +30,12 @@ var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PizzaStoreContext>();
-    if (db.Database.EnsureCreated())
+    /* if (db.Database.EnsureCreated())
     {
         SeedData.Initialize(db);
-    }
+    } */
+    db.Database.Migrate();
+    SeedData.Initialize(db);
 }
 
 app.Run();

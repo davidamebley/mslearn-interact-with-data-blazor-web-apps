@@ -15,6 +15,7 @@ public class PizzaStoreContext : DbContext
     public DbSet<PizzaSpecial> Specials { get; set; }
 
     public DbSet<Topping> Toppings { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
